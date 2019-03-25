@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,700');
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+h2 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+}
+
+/*CONTAINERS*/
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 750px !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    width: 970px !important;
+  }
+}
+@media (min-width: 1250px) {
+  .container {
+    width: 1240px !important;
+  }
+}
+@media (min-width: 1300px) {
+  .container {
+    width: 1300px !important;
+  }
+}
+@media (min-width: 1350px) {
+  .container {
+    width: 1320px !important;
+  }
+}
+/*END CONTAINERS*/
+
+/*botones*/
+.btn-primary {
+  cursor: pointer;
+  padding: 10px 30px;
+  border: 1px solid #ff0079;
+  background-color: #ff0079;
+  color: #fff;
+  border-radius: 2px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.btn-primary:hover {
+  background-color: #fd117f86;
+}
+
+.btn-border {
+  cursor: pointer;
+  padding: 10px 30px;
+  border: 1px solid #fff;
+  background-color: transparent;
+  color: #fff;
+  border-radius: 2px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+/*END botones*/
+
+.d-flex {
+  display: flex;
+}
