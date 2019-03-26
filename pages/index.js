@@ -8,6 +8,7 @@ import axios from 'axios';
 
 import './styles.css';
 import CONSTS from '../utils/consts';
+import Movie from '../components/Movie';
 
 const Banner = styled.div`
   position: relative;
@@ -32,6 +33,46 @@ const Banner = styled.div`
     h2 {
       color: #fff;
       text-transform: uppercase;
+    }
+  }
+`;
+
+const Movies = styled.div`
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+
+  .movie {
+    margin: 10px 10px;
+    flex-basis: 15%;
+    -webkit-box-shadow: 0px 3px 5px 0px rgba(199, 199, 199, 1);
+    -moz-box-shadow: 0px 3px 5px 0px rgba(199, 199, 199, 1);
+    box-shadow: 0px 3px 5px 0px rgba(199, 199, 199, 1);
+
+    img {
+      width: 100%;
+    }
+
+    .movie-detail {
+      padding: 5px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      h2 {
+        margin: 0;
+        padding: 0;
+        font-size: 90%;
+        font-weight: bold;
+      }
+      span {
+        font-size: 60%;
+        color: #4e4e4e;
+      }
+      .rate {
+        border-radius: 4px;
+        padding: 5px 10px;
+        border: 1px solid #ff0079;
+      }
     }
   }
 `;
@@ -78,9 +119,11 @@ class Index extends React.Component {
           </div>
         </Banner>
 
-        {this.movies.map(item => (
-          <div key={item.id}>{item.title}</div>
-        ))}
+        <Movies className="container">
+          {this.movies.map(item => (
+            <Movie key={item.id} movie={item} />
+          ))}
+        </Movies>
       </div>
     );
   }
