@@ -5,9 +5,8 @@ import styled from 'styled-components';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import axios from 'axios';
-
-import './styles.css';
 import CONSTS from '../utils/consts';
+import Template from '../components/Template';
 import Movie from '../components/Movie';
 
 const Banner = styled.div`
@@ -156,30 +155,34 @@ class Index extends React.Component {
         : this.props.movies;
 
     return (
-      <div>
-        <Head>
-          <title>INdex</title>
-        </Head>
+      <Template>
+        <div>
+          <Head>
+            <title>INdex</title>
+          </Head>
 
-        <Banner>
-          <div className="movie-description container">
-            <h2>Furia de titanes</h2>
-            <div className="d-flex">
-              <a className="btn-primary">Ver Pelicula</a>
-              <a className="btn-border" style={{ marginLeft: 10 }}>
-                Ver Info
-              </a>
+          <Banner>
+            <div className="movie-description container">
+              <h2>Furia de titanes</h2>
+              <div className="d-flex">
+                <a className="btn-primary">Ver Pelicula</a>
+                <a className="btn-border" style={{ marginLeft: 10 }}>
+                  Ver Info
+                </a>
+              </div>
             </div>
-          </div>
-        </Banner>
+          </Banner>
 
-        <Movies id="movies-container" className="container">
-          {movies.map(item => (
-            <Movie key={item.id} movie={item} />
-          ))}
-        </Movies>
-        {this.isFetching && <p style={{ textAlign: 'center' }}>CARGANDO ...</p>}
-      </div>
+          <Movies id="movies-container" className="container">
+            {movies.map(item => (
+              <Movie key={item.id} movie={item} />
+            ))}
+          </Movies>
+          {this.isFetching && (
+            <p style={{ textAlign: 'center' }}>CARGANDO ...</p>
+          )}
+        </div>
+      </Template>
     );
   }
 }
