@@ -81,22 +81,61 @@ const Movies = styled.div`
 class Index extends React.Component {
   @observable movies = [];
 
+  @observable isFetching = false;
+
+  totalPages = -1;
+  page = 1;
+
   componentDidMount() {
     this.getMovies(1);
+    document.addEventListener('scroll', this.trackScrolling);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('scroll', this.trackScrolling);
   }
 
   getMovies = async page => {
     try {
+      if (this.isFetching) {
+        return;
+      }
+      if (this.totalPages !== -1 && page > this.totalPages) {
+        return;
+      }
+
+      this.isFetching = true;
       const response = await axios(
         `https://api.themoviedb.org/3/movie/now_playing?api_key=${
           CONSTS.themoviedb_api_key
         }&language=en-US&page=${page}`
       );
-      console.log(response);
+
       const { results, total_pages } = response.data;
-      this.movies = results;
+      console.log('movies', results);
+      if (this.totalPages === -1) {
+        this.totalPages = total_pages > 10 ? 10 : total_pages;
+      }
+
+      this.page = page;
+      this.movies = this.movies.concat(results);
+      setTimeout(() => {
+        this.isFetching = false;
+      }, 2000);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  isBottom = el => {
+    return Math.round(el.getBoundingClientRect().bottom) <= window.innerHeight;
+  };
+
+  trackScrolling = () => {
+    const el = document.getElementById('movies-container');
+
+    if (this.isBottom(el)) {
+      this.getMovies(this.page + 1);
     }
   };
 
@@ -119,11 +158,12 @@ class Index extends React.Component {
           </div>
         </Banner>
 
-        <Movies className="container">
+        <Movies id="movies-container" className="container">
           {this.movies.map(item => (
             <Movie key={item.id} movie={item} />
           ))}
         </Movies>
+        {this.isFetching && <p style={{ textAlign: 'center' }}>CARGANDO ...</p>}
       </div>
     );
   }

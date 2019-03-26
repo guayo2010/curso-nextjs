@@ -4,6 +4,9 @@ import CONSTS from '../utils/consts';
 export default class Movie extends React.PureComponent {
   render() {
     const { movie } = this.props;
+    if (!movie.poster_path) {
+      return null;
+    }
     return (
       <div className="movie">
         <img
