@@ -1,7 +1,13 @@
+import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import styled from 'styled-components';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react';
+import axios from 'axios';
+
 import './styles.css';
+import CONSTS from '../utils/consts';
 
 const Banner = styled.div`
   position: relative;
@@ -30,23 +36,54 @@ const Banner = styled.div`
   }
 `;
 
-const Index = () => (
-  <div>
-    <Head>
-      <title>INdex</title>
-    </Head>
+@observer
+class Index extends React.Component {
+  @observable movies = [];
 
-    <Banner>
-      <div className="movie-description container">
-        <h2>Furia de titanes</h2>
-        <div className="d-flex">
-          <a className="btn-primary">Ver Pelicula</a>
-          <a className="btn-border" style={{ marginLeft: 10 }}>
-            Ver Info
-          </a>
-        </div>
+  componentDidMount() {
+    this.getMovies(1);
+  }
+
+  getMovies = async page => {
+    try {
+      const response = await axios(
+        `https://api.themoviedb.org/3/movie/now_playing?api_key=${
+          CONSTS.themoviedb_api_key
+        }&language=en-US&page=${page}`
+      );
+      console.log(response);
+      const { results, total_pages } = response.data;
+      this.movies = results;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  render() {
+    return (
+      <div>
+        <Head>
+          <title>INdex</title>
+        </Head>
+
+        <Banner>
+          <div className="movie-description container">
+            <h2>Furia de titanes</h2>
+            <div className="d-flex">
+              <a className="btn-primary">Ver Pelicula</a>
+              <a className="btn-border" style={{ marginLeft: 10 }}>
+                Ver Info
+              </a>
+            </div>
+          </div>
+        </Banner>
+
+        {this.movies.map(item => (
+          <div key={item.id}>{item.title}</div>
+        ))}
       </div>
-    </Banner>
-  </div>
-);
+    );
+  }
+}
+
 export default Index;
