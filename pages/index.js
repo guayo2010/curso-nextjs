@@ -77,6 +77,17 @@ const Movies = styled.div`
   }
 `;
 
+async function getMovies(page) {
+  const response = await axios(
+    `https://api.themoviedb.org/3/movie/now_playing?api_key=${
+      CONSTS.themoviedb_api_key
+    }&language=en-US&page=${page}`
+  );
+
+  const { results, total_pages } = response.data;
+  return { movies: results, totalPages: total_pages };
+}
+
 @observer
 class Index extends React.Component {
   @observable movies = [];
@@ -86,8 +97,16 @@ class Index extends React.Component {
   totalPages = -1;
   page = 1;
 
+  static async getInitialProps() {
+    const data = await getMovies(1);
+    return data;
+  }
+
   componentDidMount() {
-    this.getMovies(1);
+    console.log('props', this.props);
+    const { movies, totalPages } = this.props;
+    this.movies = this.movies.concat(movies);
+    this.totalPages = totalPages;
     document.addEventListener('scroll', this.trackScrolling);
   }
 
@@ -105,20 +124,11 @@ class Index extends React.Component {
       }
 
       this.isFetching = true;
-      const response = await axios(
-        `https://api.themoviedb.org/3/movie/now_playing?api_key=${
-          CONSTS.themoviedb_api_key
-        }&language=en-US&page=${page}`
-      );
 
-      const { results, total_pages } = response.data;
-      console.log('movies', results);
-      if (this.totalPages === -1) {
-        this.totalPages = total_pages > 10 ? 10 : total_pages;
-      }
+      const { movies } = await getMovies(page);
 
       this.page = page;
-      this.movies = this.movies.concat(results);
+      this.movies = this.movies.concat(movies);
       setTimeout(() => {
         this.isFetching = false;
       }, 2000);
@@ -140,6 +150,11 @@ class Index extends React.Component {
   };
 
   render() {
+    const movies =
+      this.movies.length > this.props.movies.length
+        ? this.movies
+        : this.props.movies;
+
     return (
       <div>
         <Head>
@@ -159,7 +174,7 @@ class Index extends React.Component {
         </Banner>
 
         <Movies id="movies-container" className="container">
-          {this.movies.map(item => (
+          {movies.map(item => (
             <Movie key={item.id} movie={item} />
           ))}
         </Movies>
