@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Link from 'next/link';
 import '../pages/styles.css';
 
 const Nav = styled.div`
@@ -15,8 +16,11 @@ const Nav = styled.div`
     height: 70px;
     align-items: center;
     justify-content: space-between;
-    .logo img {
-      max-width: 200px;
+    .logo {
+      cursor: pointer;
+      img {
+        max-width: 200px;
+      }
     }
   }
 `;
@@ -34,9 +38,11 @@ export default class Template extends React.Component {
       <div>
         <Nav>
           <div className="nav-container container">
-            <div className="logo">
-              <img src="/static/logo.svg" alt="logo" />
-            </div>
+            <Link href="/">
+              <div className="logo">
+                <img src="/static/logo.svg" alt="logo" />
+              </div>
+            </Link>
             <div>
               <a className="btn-border">LOG IN</a>
               <a className="btn-primary" style={{ marginLeft: 10 }}>

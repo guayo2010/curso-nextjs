@@ -13,7 +13,6 @@ const Banner = styled.div`
   position: relative;
   width: 100%;
   height: 70vh;
-  background-image: url('/static/bg/banner.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -42,6 +41,7 @@ const Movies = styled.div`
   flex-wrap: wrap;
 
   .movie {
+    text-decoration: none;
     margin: 10px 10px;
     flex-basis: 15%;
     -webkit-box-shadow: 0px 3px 5px 0px rgba(199, 199, 199, 1);
@@ -58,6 +58,7 @@ const Movies = styled.div`
       align-items: center;
       justify-content: space-between;
       h2 {
+        color: #000;
         margin: 0;
         padding: 0;
         font-size: 90%;
@@ -68,6 +69,7 @@ const Movies = styled.div`
         color: #4e4e4e;
       }
       .rate {
+        color: #000;
         border-radius: 4px;
         padding: 5px 10px;
         border: 1px solid #ff0079;
@@ -149,6 +151,7 @@ class Index extends React.Component {
   };
 
   render() {
+    const mainMovie = this.props.movies[0];
     const movies =
       this.movies.length > this.props.movies.length
         ? this.movies
@@ -161,14 +164,26 @@ class Index extends React.Component {
             <title>INdex</title>
           </Head>
 
-          <Banner>
+          <Banner
+            style={{
+              backgroundImage: `url("${CONSTS.themoviedb_backdrop_path}${
+                mainMovie.backdrop_path
+              }")`,
+            }}
+          >
             <div className="movie-description container">
-              <h2>Furia de titanes</h2>
-              <div className="d-flex">
-                <a className="btn-primary">Ver Pelicula</a>
-                <a className="btn-border" style={{ marginLeft: 10 }}>
-                  Ver Info
-                </a>
+              <div className="container">
+                <h2>{mainMovie.title}</h2>
+                <div className="d-flex">
+                  <Link
+                    href={{ pathname: 'movie', query: { id: mainMovie.id } }}
+                  >
+                    <a className="btn-primary">Ver Pelicula</a>
+                  </Link>
+                  <a className="btn-border" style={{ marginLeft: 10 }}>
+                    Ver Info
+                  </a>
+                </div>
               </div>
             </div>
           </Banner>
@@ -188,3 +203,5 @@ class Index extends React.Component {
 }
 
 export default Index;
+
+export { Banner };
