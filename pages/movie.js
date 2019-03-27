@@ -16,8 +16,9 @@ class MoviePage extends React.PureComponent {
       );
       return { movie: response.data };
     } catch (error) {
-      console.log(error);
-      return { movie: null };
+      const err = new Error();
+      err.code = 'ENOENT';
+      throw err;
     }
   }
 
